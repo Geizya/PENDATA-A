@@ -1,0 +1,102 @@
+Traceback (most recent call last):
+  File "C:\Users\acer\AppData\Local\Programs\Python\Python39\lib\site-packages\jupyter_core\utils\__init__.py", line 154, in wrapped
+    asyncio.get_running_loop()
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\acer\AppData\Local\Programs\Python\Python39\lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+  File "C:\Users\acer\AppData\Local\Programs\Python\Python39\lib\site-packages\nbclient\client.py", line 1305, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "C:\Users\acer\AppData\Local\Programs\Python\Python39\lib\site-packages\jupyter_core\utils\__init__.py", line 158, in wrapped
+    return loop.run_until_complete(inner)
+  File "C:\Users\acer\AppData\Local\Programs\Python\Python39\lib\asyncio\base_events.py", line 647, in run_until_complete
+    return future.result()
+  File "C:\Users\acer\AppData\Local\Programs\Python\Python39\lib\site-packages\nbclient\client.py", line 705, in async_execute
+    await self.async_execute_cell(
+  File "C:\Users\acer\AppData\Local\Programs\Python\Python39\lib\site-packages\nbclient\client.py", line 1058, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "C:\Users\acer\AppData\Local\Programs\Python\Python39\lib\site-packages\nbclient\client.py", line 914, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import numpy as np
+import pandas as pd
+
+# =========================
+# 1. Data Normalisasi
+# =========================
+data = pd.DataFrame({
+    'IPK': [0, 0.5, 1, 0, 0.5, 1],
+    'PO':  [0, 0.5, 0, 0, 0.5, 1],
+    'JML': [0, 1, 0, 1, 0, 1]
+})
+
+# Data yang ingin diprediksi
+test = np.array([0, 0.5])  # (IPK, PO)
+
+# =========================
+# 2. Hitung Jarak Euclidean
+# =========================
+def euclidean_distance(row, test):
+    return np.sqrt((row[0] - test[0])**2 + (row[1] - test[1])**2)
+
+data['Distance'] = data.apply(lambda row: euclidean_distance(row, test), axis=1)
+
+# =========================
+# 3. Urutkan berdasarkan jarak
+# =========================
+data_sorted = data.sort_values(by='Distance')
+
+print("Data setelah dihitung jaraknya:")
+print(data_sorted)
+
+# =========================
+# 4. Tentukan K
+# =========================
+K = 3
+neighbors = data_sorted.head(K)
+
+print("\nTetangga terdekat (K=3):")
+print(neighbors)
+
+# =========================
+# 5. Hitung Bobot (Weight)
+# =========================
+neighbors['Weight'] = 1 / neighbors['Distance']
+
+print("\nDengan bobot:")
+print(neighbors)
+
+# =========================
+# 6. Hitung Prediksi WKNN
+# =========================
+numerator = np.sum(neighbors['Weight'] * neighbors['JML'])
+denominator = np.sum(neighbors['Weight'])
+
+prediction = numerator / denominator
+
+print("\nNilai prediksi (sebelum pembulatan):", prediction)
+
+# =========================
+# 7. Hasil Akhir
+# =========================
+final_result = round(prediction)
+
+print("Hasil akhir JML:", final_result)
+------------------
+
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+Cell [1;32mIn[1], line 1[0m
+[1;32m----> 1[0m [38;5;28;01mimport[39;00m[38;5;250m [39m[38;5;21;01mnumpy[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[38;5;21;01mnp[39;00m
+[0;32m      2[0m [38;5;28;01mimport[39;00m[38;5;250m [39m[38;5;21;01mpandas[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[38;5;21;01mpd[39;00m
+[0;32m      4[0m [38;5;66;03m# =========================[39;00m
+[0;32m      5[0m [38;5;66;03m# 1. Data Normalisasi[39;00m
+[0;32m      6[0m [38;5;66;03m# =========================[39;00m
+
+[1;31mModuleNotFoundError[0m: No module named 'numpy'
+
