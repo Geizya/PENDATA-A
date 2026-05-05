@@ -8,4 +8,5 @@ chapters:
 - file: pertemuan3
 - file: Preprocessing_Data
 - file: Dataset_Klasifikasi
+- file: Naive_Bayes
 
