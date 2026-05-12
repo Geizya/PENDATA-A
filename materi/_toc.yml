@@ -9,4 +9,5 @@ chapters:
 - file: Preprocessing_Data
 - file: Dataset_Klasifikasi
 - file: Naive_Bayes
+- file: Decesion_Tree
 
